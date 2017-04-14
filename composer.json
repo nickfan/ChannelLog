@@ -8,7 +8,6 @@
             "email": "nickfan81@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
     "require":{
         "php": ">=5.5.9",
         "monolog/monolog": "~1.11"
