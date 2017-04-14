@@ -100,21 +100,28 @@ class ChannelLogWriter
      * @param string $channel
      * @param null|string $configure
      * @return \Monolog\Logger
+     * @throws \InvalidArgumentException
      */
     public function channel($channel,$configure=null){
         if(!isset($this->instances[$channel]) || empty($this->instances[$channel])){
-            $this->instances[$channel] = $this->getLoggerInstanceBySettins($channel,$this->config[$channel]);
+            if(!is_null($configure) && is_callable($configure)){
+                $this->setChannel($channel,$configure);
+            }elseif(isset($this->config[$channel])){
+                $this->instances[$channel] = $this->getLoggerInstanceBySettings($channel,$this->config[$channel]);
+            }else{
+                throw new \InvalidArgumentException('Invalid channel used.');
+            }
         }else{
             if(!is_null($configure) && is_callable($configure)){
                 $this->setChannel($channel,$configure);
             }elseif($configure===true && isset($this->config[$channel])){
-                $this->instances[$channel] = $this->getLoggerInstanceBySettins($channel,$this->config[$channel]);
+                $this->instances[$channel] = $this->getLoggerInstanceBySettings($channel,$this->config[$channel]);
             }
         }
         return $this->instances[$channel];
     }
 
-    protected function getLoggerInstanceBySettins($channel,$settings=[])
+    protected function getLoggerInstanceBySettings($channel,$settings=[])
     {
         $channelLoggerInstance = new Logger($channel);
         if(empty($settings) || !isset($settings['configurator'])){
