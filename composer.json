@@ -1,0 +1,30 @@
+{
+    "name": "nickfan/channel-log",
+    "description": "Support Laravel Log data to separate channel log files with config",
+    "type": "library",
+    "authors": [
+        {
+            "name": "nick fan",
+            "email": "nickfan81@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require":{
+        "php": ">=5.5.9",
+        "monolog/monolog": "~1.11"
+    },
+    "require-dev": {
+        "illuminate/support": "5.1.x|5.0.x|5.2.x|5.3.x|5.4.x|5.5.x",
+        "phpunit/phpunit": "~4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nickfan\\ChannelLog\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Nickfan\\ChannelLog\\Tests\\": "tests/"
+        }
+    }
+}
