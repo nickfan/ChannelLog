@@ -99,7 +99,7 @@ class ChannelLogWriter
     /**
      * @param string $channel
      * @param null|string $configure
-     * @return Logger
+     * @return \Monolog\Logger
      */
     public function channel($channel,$configure=null){
         if(!isset($this->instances[$channel]) || empty($this->instances[$channel])){
@@ -113,15 +113,6 @@ class ChannelLogWriter
         }
         return $this->instances[$channel];
     }
-
-    public function __call($func, $params)
-    {
-        if(empty($this->currentChannel)){
-            throw new \InvalidArgumentException('set Current Channel First.');
-        }
-        return call_user_func_array([$this->instances[$this->currentChannel],$func],$params);
-    }
-
 
     protected function getLoggerInstanceBySettins($channel,$settings=[])
     {
@@ -138,6 +129,247 @@ class ChannelLogWriter
             throw new \InvalidArgumentException('Invalid configurator , must implements :'.ChannelLogConfigurator::class);
         }
         return $channelLoggerInstance;
+    }
+
+    public function __call($func, $params)
+    {
+        if(empty($this->currentChannel)){
+            throw new \InvalidArgumentException('set Current Channel First.');
+        }
+        return call_user_func_array([$this->instances[$this->currentChannel],$func],$params);
+    }
+
+/*
+        'debug'     => Logger::DEBUG,
+        'info'      => Logger::INFO,
+        'notice'    => Logger::NOTICE,
+        'warning'   => Logger::WARNING,
+        'error'     => Logger::ERROR,
+        'critical'  => Logger::CRITICAL,
+        'alert'     => Logger::ALERT,
+        'emergency' => Logger::EMERGENCY,
+ */
+
+    /**
+     * Adds a log record at an arbitrary level.
+     *
+     * This method allows for compatibility with common interfaces.
+     *
+     * @param  mixed   $level   The log level
+     * @param  string  $message The log message
+     * @param  array   $context The log context
+     * @return Boolean Whether the record has been processed
+     */
+    public function log($level, $message, array $context = array())
+    {
+        if(empty($this->currentChannel)){
+            throw new \InvalidArgumentException('set Current Channel First.');
+        }
+        return call_user_func_array([$this->instances[$this->currentChannel],__FUNCTION__],func_get_args());
+    }
+
+    /**
+     * Adds a log record at the DEBUG level.
+     *
+     * This method allows for compatibility with common interfaces.
+     *
+     * @param  string  $message The log message
+     * @param  array   $context The log context
+     * @return Boolean Whether the record has been processed
+     */
+    public function debug($message, array $context = array())
+    {
+        if(empty($this->currentChannel)){
+            throw new \InvalidArgumentException('set Current Channel First.');
+        }
+        return call_user_func_array([$this->instances[$this->currentChannel],__FUNCTION__],func_get_args());
+    }
+
+    /**
+     * Adds a log record at the INFO level.
+     *
+     * This method allows for compatibility with common interfaces.
+     *
+     * @param  string  $message The log message
+     * @param  array   $context The log context
+     * @return Boolean Whether the record has been processed
+     */
+    public function info($message, array $context = array())
+    {
+        if(empty($this->currentChannel)){
+            throw new \InvalidArgumentException('set Current Channel First.');
+        }
+        return call_user_func_array([$this->instances[$this->currentChannel],__FUNCTION__],func_get_args());
+    }
+
+    /**
+     * Adds a log record at the NOTICE level.
+     *
+     * This method allows for compatibility with common interfaces.
+     *
+     * @param  string  $message The log message
+     * @param  array   $context The log context
+     * @return Boolean Whether the record has been processed
+     */
+    public function notice($message, array $context = array())
+    {
+        if(empty($this->currentChannel)){
+            throw new \InvalidArgumentException('set Current Channel First.');
+        }
+        return call_user_func_array([$this->instances[$this->currentChannel],__FUNCTION__],func_get_args());
+    }
+
+    /**
+     * Adds a log record at the WARNING level.
+     *
+     * This method allows for compatibility with common interfaces.
+     *
+     * @param  string  $message The log message
+     * @param  array   $context The log context
+     * @return Boolean Whether the record has been processed
+     */
+    public function warn($message, array $context = array())
+    {
+        if(empty($this->currentChannel)){
+            throw new \InvalidArgumentException('set Current Channel First.');
+        }
+        return call_user_func_array([$this->instances[$this->currentChannel],__FUNCTION__],func_get_args());
+    }
+
+    /**
+     * Adds a log record at the WARNING level.
+     *
+     * This method allows for compatibility with common interfaces.
+     *
+     * @param  string  $message The log message
+     * @param  array   $context The log context
+     * @return Boolean Whether the record has been processed
+     */
+    public function warning($message, array $context = array())
+    {
+        if(empty($this->currentChannel)){
+            throw new \InvalidArgumentException('set Current Channel First.');
+        }
+        return call_user_func_array([$this->instances[$this->currentChannel],__FUNCTION__],func_get_args());
+    }
+
+    /**
+     * Adds a log record at the ERROR level.
+     *
+     * This method allows for compatibility with common interfaces.
+     *
+     * @param  string  $message The log message
+     * @param  array   $context The log context
+     * @return Boolean Whether the record has been processed
+     */
+    public function err($message, array $context = array())
+    {
+        if(empty($this->currentChannel)){
+            throw new \InvalidArgumentException('set Current Channel First.');
+        }
+        return call_user_func_array([$this->instances[$this->currentChannel],__FUNCTION__],func_get_args());
+    }
+
+    /**
+     * Adds a log record at the ERROR level.
+     *
+     * This method allows for compatibility with common interfaces.
+     *
+     * @param  string  $message The log message
+     * @param  array   $context The log context
+     * @return Boolean Whether the record has been processed
+     */
+    public function error($message, array $context = array())
+    {
+        if(empty($this->currentChannel)){
+            throw new \InvalidArgumentException('set Current Channel First.');
+        }
+        return call_user_func_array([$this->instances[$this->currentChannel],__FUNCTION__],func_get_args());
+    }
+
+    /**
+     * Adds a log record at the CRITICAL level.
+     *
+     * This method allows for compatibility with common interfaces.
+     *
+     * @param  string  $message The log message
+     * @param  array   $context The log context
+     * @return Boolean Whether the record has been processed
+     */
+    public function crit($message, array $context = array())
+    {
+        if(empty($this->currentChannel)){
+            throw new \InvalidArgumentException('set Current Channel First.');
+        }
+        return call_user_func_array([$this->instances[$this->currentChannel],__FUNCTION__],func_get_args());
+    }
+
+    /**
+     * Adds a log record at the CRITICAL level.
+     *
+     * This method allows for compatibility with common interfaces.
+     *
+     * @param  string  $message The log message
+     * @param  array   $context The log context
+     * @return Boolean Whether the record has been processed
+     */
+    public function critical($message, array $context = array())
+    {
+        if(empty($this->currentChannel)){
+            throw new \InvalidArgumentException('set Current Channel First.');
+        }
+        return call_user_func_array([$this->instances[$this->currentChannel],__FUNCTION__],func_get_args());
+    }
+
+    /**
+     * Adds a log record at the ALERT level.
+     *
+     * This method allows for compatibility with common interfaces.
+     *
+     * @param  string  $message The log message
+     * @param  array   $context The log context
+     * @return Boolean Whether the record has been processed
+     */
+    public function alert($message, array $context = array())
+    {
+        if(empty($this->currentChannel)){
+            throw new \InvalidArgumentException('set Current Channel First.');
+        }
+        return call_user_func_array([$this->instances[$this->currentChannel],__FUNCTION__],func_get_args());
+    }
+
+    /**
+     * Adds a log record at the EMERGENCY level.
+     *
+     * This method allows for compatibility with common interfaces.
+     *
+     * @param  string  $message The log message
+     * @param  array   $context The log context
+     * @return Boolean Whether the record has been processed
+     */
+    public function emerg($message, array $context = array())
+    {
+        if(empty($this->currentChannel)){
+            throw new \InvalidArgumentException('set Current Channel First.');
+        }
+        return call_user_func_array([$this->instances[$this->currentChannel],__FUNCTION__],func_get_args());
+    }
+
+    /**
+     * Adds a log record at the EMERGENCY level.
+     *
+     * This method allows for compatibility with common interfaces.
+     *
+     * @param  string  $message The log message
+     * @param  array   $context The log context
+     * @return Boolean Whether the record has been processed
+     */
+    public function emergency($message, array $context = array())
+    {
+        if(empty($this->currentChannel)){
+            throw new \InvalidArgumentException('set Current Channel First.');
+        }
+        return call_user_func_array([$this->instances[$this->currentChannel],__FUNCTION__],func_get_args());
     }
 
 }

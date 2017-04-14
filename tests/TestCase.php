@@ -3,7 +3,7 @@
 namespace Nickfan\ChannelLog\Tests;
 
 use Monolog\Logger;
-use Nickfan\ChannelLog\ChannelLogWriter;
+use Nickfan\ChannelLog\ChannelLogWriterStandAlone;
 
 class TestCase extends \PHPUnit_Framework_TestCase
 {
@@ -21,7 +21,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     public function testDefault()
     {
         $projectRoot = dirname(__DIR__);
-        $channelLogWriter = new ChannelLogWriter(
+        $channelLogWriter = new ChannelLogWriterStandAlone(
             [
                 'default'=>[
                     'path'=>$projectRoot.'/logs/default.log',
@@ -33,9 +33,11 @@ class TestCase extends \PHPUnit_Framework_TestCase
                 ],
             ]
         );
-        $channelLogWriter->channel('default')->info('my test message {mykey1}',['mykey1'=>'myval1','aaa'=>'abc']);
-        $channelLogWriter->channel('event')->error('my event message {mykey2}',['mykey2'=>'myval2','qqq'=>'qwe']);
+        $result1 = $channelLogWriter->channel('default')->info('my test message {mykey1}',['mykey1'=>'myval1','aaa'=>'abc']);
+        $this->assertEquals(true,$result1);
 
-        $this->assertEquals(1,1*1);
+        $result2 = $channelLogWriter->channel('event')->error('my event message {mykey2}',['mykey2'=>'myval2','qqq'=>'qwe']);
+        $this->assertEquals(true,$result2);
+
     }
 }
