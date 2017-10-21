@@ -12,6 +12,7 @@ namespace Nickfan\ChannelLog;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\RotatingFileHandler;
+use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogHandler;
 use Monolog\Logger;
 
@@ -23,6 +24,7 @@ class ChannelLogDefaultConfiguratorStandAlone implements ChannelLogConfigurator
         $settings+=[
             'path'=>'',
             'level' => Logger::DEBUG,
+            'console'=>false,
             'log'=>'single',
             'log_syslog_name'=>'channel_log',
             'log_max_files'=>5,
@@ -43,10 +45,10 @@ class ChannelLogDefaultConfiguratorStandAlone implements ChannelLogConfigurator
         }
         $level = $settings['level'];
 
+        $formatter = new LineFormatter(null, null, false, true);
         switch ($log){
             case 'daily':
                 $days = $settings['log_max_files'];
-                $formatter = new LineFormatter(null, null, false, true);
                 $logger->pushHandler(
                     $handler = new RotatingFileHandler($path, $days, $level)
                 );
@@ -58,11 +60,19 @@ class ChannelLogDefaultConfiguratorStandAlone implements ChannelLogConfigurator
                 break;
             case 'errorlog':
                 $messageType = ErrorLogHandler::OPERATING_SYSTEM;
-                $formatter = new LineFormatter(null, null, false, true);
                 $logger->pushHandler(
                     $handler = new ErrorLogHandler($messageType, $level)
                 );
                 $handler->setFormatter($formatter);
+                break;
+            case 'console':
+                $logger->pushHandler(
+                    new ChannelLogStreamHandler(
+                        $channel,
+                        'php://stdout',
+                        $level
+                    )
+                );
                 break;
             case 'single':
             default:
@@ -75,7 +85,16 @@ class ChannelLogDefaultConfiguratorStandAlone implements ChannelLogConfigurator
                 );
                 break;
         }
-
+        if($settings['console']==true && $log!='console'){
+            $logger->pushHandler(
+                new ChannelLogStreamHandler(
+                    $channel,
+                    'php://stdout',
+                    $level
+                )
+//                new StreamHandler('php://stdout', $level)
+            );
+        }
         return $logger;
     }
 }
