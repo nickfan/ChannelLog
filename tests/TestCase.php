@@ -24,10 +24,12 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $channelLogWriter = new ChannelLogWriterStandAlone(
             [
                 'default'=>[
+                    'log' => 'single',
                     'path'=>$projectRoot.'/logs/default.log',
                     'level'=>Logger::INFO,
                 ],
                 'event' => [
+                    'log' => 'daily',
                     'path' => $projectRoot.'/logs/event.log',
                     'level' => \Monolog\Logger::DEBUG,
                 ],
