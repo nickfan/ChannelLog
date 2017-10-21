@@ -6,10 +6,11 @@ return [
         |--------------------------------------------------------------------------
         | Logging Configuration
         |--------------------------------------------------------------------------
-        | Available Settings: "single", "daily", "syslog", "errorlog"
+        | Available Settings: "single", "daily", "syslog", "errorlog", "console"
         |
         */
         'log' => 'single',
+        'console'=> false,
         'path' => 'logs/default.log',
         'level' => \Monolog\Logger::DEBUG
     ],

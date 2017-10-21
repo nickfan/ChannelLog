@@ -25,11 +25,13 @@ class TestCase extends \PHPUnit_Framework_TestCase
             [
                 'default'=>[
                     'log' => 'single',
+                    'console'=> false,
                     'path'=>$projectRoot.'/logs/default.log',
                     'level'=>Logger::INFO,
                 ],
                 'event' => [
                     'log' => 'daily',
+                    'console'=> true,
                     'path' => $projectRoot.'/logs/event.log',
                     'level' => \Monolog\Logger::DEBUG,
                 ],
