@@ -9,10 +9,25 @@ return [
         | Available Settings: "single", "daily", "syslog", "errorlog", "console"
         |
         */
-        'log' => 'single',
-        'console'=> false,
+        'log'=>'single',
+        'console'=>false,
         'path' => 'logs/default.log',
-        'level' => \Monolog\Logger::DEBUG
+        'level' => \Monolog\Logger::DEBUG,
+    ],
+    'console'=>[
+        'log'=>'console',
+        'console'=>false,
+        'path'=>'php://stdout',
+        'level' => \Monolog\Logger::DEBUG,
+    ],
+    'custom'=>[
+        'name'=>'custom',
+        'log'=>'daily',
+        'console'=>true,
+        'path'=>'logs/custom.log',
+        'level' => \Monolog\Logger::DEBUG,
+        'log_syslog_name'=>'channel_log',
+        'log_max_files'=>5,
     ],
 //    'event' => [
 //        'log' => 'daily',

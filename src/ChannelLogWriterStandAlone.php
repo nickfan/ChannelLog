@@ -97,6 +97,129 @@ class ChannelLogWriterStandAlone
     }
 
     /**
+     * @param mixed|null $params
+     * @return array
+     */
+    public static function parseSettingsByParams($params=null){
+        $settings = [
+            'name'=> 'console',
+            'log' => 'console',
+            'console'=> true,
+            'path' => 'php://stdout',
+            'level' => \Monolog\Logger::DEBUG
+        ];
+        if(!empty($params)) {
+            if (is_array($params)) {
+                $settings = $params;
+                if(!isset($settings['log'])){
+                    if(isset($settings['path']) && $settings['path']!='php://stdout'){
+                        $settings['log'] = 'single';
+                    }else{
+                        $settings['log'] = 'console';
+                    }
+                }
+                $settings = array_merge([
+                    'name' => 'console',
+                    'log' => 'console',
+                    'console' => false,
+                    'path' => 'php://stdout',
+                    'level' => \Monolog\Logger::DEBUG
+                ], $settings);
+            } elseif (is_scalar($params)) {
+                if (strpos($params, '/') !== false
+                    || strpos($params, '\\') !== false
+                    || strpos($params, '.') !== false) {
+                    $settings = [
+                        'name'=> basename($params),
+                        'log' => 'single',
+                        'console'=> false,
+                        'path' => $params,
+                        'level' => \Monolog\Logger::DEBUG
+                    ];
+                }else{
+                    $settings = [
+                        'name'=> basename($params),
+                        'log' => 'single',
+                        'console'=> true,
+                        'path' => $params,
+                        'level' => \Monolog\Logger::DEBUG
+                    ];
+                }
+            }
+        }
+        return $settings;
+    }
+
+    /**
+     * @param mixed $params
+     * @return \Monolog\Logger
+     * @throws \InvalidArgumentException
+     */
+    public function single($params=null){
+        $settings = self::parseSettingsByParams($params);
+        $settings['log']='single';
+        return $this->direct($settings);
+    }
+
+    /**
+     * @param mixed $params
+     * @return \Monolog\Logger
+     * @throws \InvalidArgumentException
+     */
+    public function daily($params=null){
+        $settings = self::parseSettingsByParams($params);
+        $settings['log']='daily';
+        return $this->direct($settings);
+    }
+
+    /**
+     * @param mixed $params
+     * @return \Monolog\Logger
+     * @throws \InvalidArgumentException
+     */
+    public function syslog($params=null){
+        $settings = self::parseSettingsByParams($params);
+        $settings['log']='syslog';
+        return $this->direct($settings);
+    }
+
+    /**
+     * @param mixed $params
+     * @return \Monolog\Logger
+     * @throws \InvalidArgumentException
+     */
+    public function errorlog($params=null){
+        $settings = self::parseSettingsByParams($params);
+        $settings['log']='errorlog';
+        return $this->direct($settings);
+    }
+
+    /**
+     * @param mixed $params
+     * @return \Monolog\Logger
+     * @throws \InvalidArgumentException
+     */
+    public function console($params=null){
+        $settings = self::parseSettingsByParams($params);
+        $settings['log']='console';
+        return $this->direct($settings);
+    }
+
+    /**
+     * @param mixed $params
+     * @return \Monolog\Logger
+     * @throws \InvalidArgumentException
+     */
+    public function direct($params=null){
+        $settings = self::parseSettingsByParams($params);
+        $channel = $settings['name'];
+        if(!isset($this->instances[$channel]) || empty($this->instances[$channel])){
+            $this->instances[$channel] = $this->getLoggerInstanceBySettings($channel,$settings);
+        }
+        return $this->instances[$channel];
+    }
+
+    /**
      * @param string $channel
      * @param null|string $configure
      * @return \Monolog\Logger
