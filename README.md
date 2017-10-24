@@ -40,16 +40,25 @@ php artisan vendor:publish --provider="Nickfan\ChannelLog\ChannelLogServiceProvi
 
 ```
 return [
-    'default' => [  // Channel Label Name
-        'path' => 'logs/default.log', // Log file path,relative path will convert to relative with storage_path(yourpath)
-        'level' => \Monolog\Logger::DEBUG // Log Level
+    'default' => [
+        'path' => 'logs/default.log',
+        'level' => \Monolog\Logger::DEBUG
     ],
 //    'event' => [
 //        'path' => 'logs/event.log',
 //        'level' => \Monolog\Logger::INFO
 //    ],
-
+    'custom'=>[  // Channel Label Name
+        'name'=>'custom',           // (optional) Channel Label Name
+        'log'=>'daily',             // log mode support: console (only in stdout); single (single file); daily (daily files); syslog (syslog); errorlog (php errorlog);
+        'console'=>true,            // output to stdout(console) at the sametime.
+        'path'=>'logs/custom.log', // Log file path,relative path will convert to relative with storage_path(yourpath)
+        'level' => \Monolog\Logger::DEBUG, // Log Level
+        'log_syslog_name'=>'channel_log',   // syslog mode log entry name
+        'log_max_files'=>5,                 // max files keep in daily log mode
+    ],
 ];
+
 
 ```
 
@@ -79,7 +88,7 @@ return [
 ```
 
 
-## Usage
+## Laravel Usage
 
 ```
 
@@ -89,8 +98,62 @@ ChannelLog::channel('default')->info('my test message {mykey1}',['mykey1'=>'myva
 // Log to 'event' channel
 ChannelLog::channel('event')->error('my event message {mykey2}',['mykey2'=>'myval2','qqq'=>'qwe']);
 
+// Log to 'mycustom.log' channel in daily log mode ,with filepath '/tmp/mycustom-2017-10-24.log'
+ChannelLog::daily('/tmp/mycustom.log')->debug('my custom message {mykey2}',['mykey2'=>'myval2','qqq'=>'qwe']);
+
+// Log to 'newdirect.log' channel in single log mode ,with filepath '/tmp/newdirect.log' , also log to console(stdout)
+ChannelLog::direct([
+            'name'=>'newdirect',// Channel Label Name
+            'console'=>true,    // output to console(stdout)
+            'path'=>'/tmp/newdirect.log', // log filepath
+            ])->debug('new direct message {mykey2}',['mykey2'=>'myval2','qqq'=>'qwe']);
+
+
+```
+
+## Standalone Usage
+
+```
+use Nickfan\ChannelLog\ChannelLogWriterStandAlone;
+
+$projectRoot = dirname(__DIR__);
+$channelLogWriter = new ChannelLogWriterStandAlone(
+  [
+      'default'=>[
+          'log' => 'single',
+          'console'=> false,
+          'path'=>$projectRoot.'/logs/default.log',
+          'level'=>\Monolog\Logger::INFO,
+      ],
+      'event' => [
+          'log' => 'daily',
+          'console'=> true,
+          'path' => $projectRoot.'/logs/event.log',
+          'level' => \Monolog\Logger::DEBUG,
+      ],
+  ]
+);
+
+$channelLogWriter->channel('default')->info('my test message {mykey1}',['mykey1'=>'myval1','aaa'=>'abc']);
+
+
+$result2 = $channelLogWriter->channel('event')->error('my event message {mykey2}',['mykey2'=>'myval2','qqq'=>'qwe']);
+
+
+$result3 = $channelLogWriter->daily($projectRoot.'/logs/mycustom.log')->debug('my custom message {mykey2}',['mykey2'=>'myval2','qqq'=>'qwe']);
+
+
+$result4 = $channelLogWriter->direct($projectRoot.'/logs/mydirect.log')->debug('my direct message {mykey2}',['mykey2'=>'myval2','qqq'=>'qwe']);
+
+
+$result5 = $channelLogWriter->direct([
+            'name'=>'newdirect',
+            'console'=>true,
+            'path'=>$projectRoot.'/logs/newdirect.log',
+            ])->debug('new direct message {mykey2}',['mykey2'=>'myval2','qqq'=>'qwe']);
+
 ```
 
 
-**more detail usage reference monolog offical site**
+**more detail usage reference monolog offical site https://github.com/Seldaek/monolog**
 
