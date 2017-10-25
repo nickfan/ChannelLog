@@ -98,10 +98,10 @@ ChannelLog::channel('default')->info('my test message {mykey1}',['mykey1'=>'myva
 // Log to 'event' channel
 ChannelLog::channel('event')->error('my event message {mykey2}',['mykey2'=>'myval2','qqq'=>'qwe']);
 
-// Log to 'mycustom.log' channel in daily log mode ,with filepath '/tmp/mycustom-2017-10-24.log'
+// Log to 'mycustom' channel in daily log mode ,with filepath '/tmp/mycustom-2017-10-24.log'
 ChannelLog::daily('/tmp/mycustom.log')->debug('my custom message {mykey2}',['mykey2'=>'myval2','qqq'=>'qwe']);
 
-// Log to 'newdirect.log' channel in single log mode ,with filepath '/tmp/newdirect.log' , also log to console(stdout)
+// Log to 'newdirect' channel in single log mode ,with filepath '/tmp/newdirect.log' , also log to console(stdout)
 ChannelLog::direct([
             'name'=>'newdirect',// Channel Label Name
             'console'=>true,    // output to console(stdout)

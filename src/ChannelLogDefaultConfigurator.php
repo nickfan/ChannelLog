@@ -45,7 +45,7 @@ class ChannelLogDefaultConfigurator implements ChannelLogConfigurator
                 $path = storage_path($path);
             }
         }
-        $level = $settings['level'];
+        $level = Logger::toMonologLevel($settings['level']);
 
         $formatter = new LineFormatter(null, null, false, true);
         switch ($log){

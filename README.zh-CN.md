@@ -49,7 +49,7 @@ return [
         'log'=>'daily',             // 日志模式 支持 console 只在终端输出; single 单文件模式; daily 每日文件模式; syslog 系统日志模式; errorlog php系统配置中的errorlog;
         'console'=>true,            // 在记录到文件流的同时是否同步输出到终端
         'path'=>'logs/custom.log', // 日志文件路径 相对路径会存储在storage_path中
-        'level' => \Monolog\Logger::DEBUG, // 日志等级
+        'level' => \Monolog\Logger::DEBUG, // 日志等级 \Monolog\Logger::DEBUG 常量或者 'debug' 格式的字符串
         'log_syslog_name'=>'channel_log',   // 当日志模式为 syslog时 系统日志中的项目名称
         'log_max_files'=>5,                 // 当日志模式为 daily时，最大保留的日志文件个数(天数)
     ],

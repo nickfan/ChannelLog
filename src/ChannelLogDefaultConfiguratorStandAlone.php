@@ -43,7 +43,7 @@ class ChannelLogDefaultConfiguratorStandAlone implements ChannelLogConfigurator
                 throw new \InvalidArgumentException('relative path not allowed');
             }
         }
-        $level = $settings['level'];
+        $level = Logger::toMonologLevel($settings['level']);
 
         $formatter = new LineFormatter(null, null, false, true);
         switch ($log){

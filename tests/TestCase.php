@@ -51,8 +51,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $result5 = $channelLogWriter->direct([
             'name'=>'newdirect',
             'console'=>true,
+            'level'=>'debug',
             'path'=>$projectRoot.'/logs/newdirect.log',
-            ])->debug('new direct message {mykey2}',['mykey2'=>'myval2','qqq'=>'qwe']);
+            ])->info('new direct message {mykey2}',['mykey2'=>'myval2','qqq'=>'qwe']);
         $this->assertEquals(true,$result5);
     }
 }
