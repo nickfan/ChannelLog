@@ -112,10 +112,11 @@ class ChannelLogWriterStandAlone
             if (is_array($params)) {
                 $settings = $params;
                 if(!isset($settings['log'])){
-                    if(isset($settings['path']) && $settings['path']!='php://stdout'){
+                    if(isset($settings['path']) && !empty($settings['path']) && $settings['path']!='php://stdout'){
                         $settings['log'] = 'single';
                     }else{
                         $settings['log'] = 'console';
+                        $settings['path'] = 'php://stdout';
                     }
                 }
                 $settings = array_merge([
@@ -126,27 +127,21 @@ class ChannelLogWriterStandAlone
                     'level' => \Monolog\Logger::DEBUG
                 ], $settings);
             } elseif (is_scalar($params)) {
+                $settings = [
+                    'name'=> basename($params),
+                    'log' => 'single',
+                    'console'=> true,
+                    'path' => $params,
+                    'level' => \Monolog\Logger::DEBUG
+                ];
                 if (strpos($params, '/') !== false
                     || strpos($params, '\\') !== false
                     || strpos($params, '.') !== false) {
-                    $settings = [
-                        'name'=> basename($params),
-                        'log' => 'single',
-                        'console'=> false,
-                        'path' => $params,
-                        'level' => \Monolog\Logger::DEBUG
-                    ];
-                }else{
-                    $settings = [
-                        'name'=> basename($params),
-                        'log' => 'single',
-                        'console'=> true,
-                        'path' => $params,
-                        'level' => \Monolog\Logger::DEBUG
-                    ];
+                    $settings['console'] = false;
                 }
             }
         }
+        $settings['name'] = isset($settings['name']) && !empty($settings['name']) ? basename($settings['name'],'.'.pathinfo($settings['name'],PATHINFO_EXTENSION)) : md5($settings['path']);
         return $settings;
     }
 
