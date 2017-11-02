@@ -41,7 +41,7 @@ class ChannelLogDefaultConfiguratorStandAlone implements ChannelLogConfigurator
                     if(empty($settings['base_path'])){
                         throw new \InvalidArgumentException('base_path required');
                     }else{
-                        $path = rtrim($settings['base_path'],'\\/ ').DIRECTORY_SEPARATOR.$path;
+                        $path = rtrim($settings['base_path'],'\\/ ') . DIRECTORY_SEPARATOR . $path;
                     }
                 }
             }else{
@@ -49,7 +49,7 @@ class ChannelLogDefaultConfiguratorStandAlone implements ChannelLogConfigurator
                     if(empty($settings['base_path'])){
                         throw new \InvalidArgumentException('base_path required');
                     }else{
-                        $path = rtrim($settings['base_path'],'\\/ ').DIRECTORY_SEPARATOR.$path;
+                        $path = rtrim($settings['base_path'],'\\/ ') . DIRECTORY_SEPARATOR . $path;
                     }
                 }
             }

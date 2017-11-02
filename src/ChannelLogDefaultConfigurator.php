@@ -39,12 +39,20 @@ class ChannelLogDefaultConfigurator implements ChannelLogConfigurator
             if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
                 if(strpos($path,':'.DIRECTORY_SEPARATOR)===false){
     //                throw new \InvalidArgumentException('relative path not allowed');
-                    $path = storage_path($path);
+                    if(empty($settings['base_path'])){
+                        $path = storage_path($path);
+                    }else{
+                        $path = rtrim($settings['base_path'],'\\/ ') . DIRECTORY_SEPARATOR . $path;
+                    }
                 }
             }else{
                 if($path[0] !== DIRECTORY_SEPARATOR){
     //                throw new \InvalidArgumentException('relative path not allowed');
-                    $path = storage_path($path);
+                    if(empty($settings['base_path'])){
+                        $path = storage_path($path);
+                    }else{
+                        $path = rtrim($settings['base_path'],'\\/ ') . DIRECTORY_SEPARATOR . $path;
+                    }
                 }
             }
         }
