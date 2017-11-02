@@ -28,6 +28,12 @@ class TestCase extends \PHPUnit_Framework_TestCase
                     'path'=>$projectRoot.'/logs/default.log',
                     'level'=>\Monolog\Logger::INFO,
                 ],
+                'console' => array(
+                    'log' => 'console',
+                    'console'=> true,
+                    'path' => 'php://stdout',
+                    'level' => \Monolog\Logger::DEBUG
+                ),
                 'event' => [
                     'log' => 'daily',
                     'console'=> true,
@@ -55,5 +61,12 @@ class TestCase extends \PHPUnit_Framework_TestCase
             'path'=>$projectRoot.'/logs/newdirect.log',
             ])->info('new direct message {mykey2}',['mykey2'=>'myval2','qqq'=>'qwe']);
         $this->assertEquals(true,$result5);
+
+
+        $result6 = $channelLogWriter->channel('console')->debug('my console1 message :mykey2',['mykey2'=>'myval2','qqq'=>'qwe']);
+        $this->assertEquals(true,$result6);
+
+        $result7 = $channelLogWriter->console()->debug('my console2 message :mykey2',['mykey2'=>'myval2','qqq'=>'qwe']);
+        $this->assertEquals(true,$result7);
     }
 }

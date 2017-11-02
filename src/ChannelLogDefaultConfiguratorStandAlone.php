@@ -23,6 +23,7 @@ class ChannelLogDefaultConfiguratorStandAlone implements ChannelLogConfigurator
     {
         $settings+=[
             'path'=>'',
+            'base_path'=>'',
             'level' => Logger::DEBUG,
             'console'=>false,
             'log'=>'single',
@@ -34,13 +35,23 @@ class ChannelLogDefaultConfiguratorStandAlone implements ChannelLogConfigurator
         if(empty($path)){
             throw new \InvalidArgumentException('log file path required');
         }
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            if(strpos($path,':'.DIRECTORY_SEPARATOR)===false){
-                throw new \InvalidArgumentException('relative path not allowed');
-            }
-        }else{
-            if($path[0] !== DIRECTORY_SEPARATOR){
-                throw new \InvalidArgumentException('relative path not allowed');
+        if($path!=='php://stdout'){
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                if(strpos($path,':'.DIRECTORY_SEPARATOR)===false){
+                    if(empty($settings['base_path'])){
+                        throw new \InvalidArgumentException('base_path required');
+                    }else{
+                        $path = rtrim($settings['base_path'],'\\/ ') . DIRECTORY_SEPARATOR . $path;
+                    }
+                }
+            }else{
+                if($path[0] !== DIRECTORY_SEPARATOR){
+                    if(empty($settings['base_path'])){
+                        throw new \InvalidArgumentException('base_path required');
+                    }else{
+                        $path = rtrim($settings['base_path'],'\\/ ') . DIRECTORY_SEPARATOR . $path;
+                    }
+                }
             }
         }
         $level = Logger::toMonologLevel($settings['level']);
