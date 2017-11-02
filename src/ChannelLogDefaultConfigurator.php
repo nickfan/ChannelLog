@@ -23,6 +23,7 @@ class ChannelLogDefaultConfigurator implements ChannelLogConfigurator
     {
         $settings+=[
             'path'=>'',
+            'base_path'=>'',
             'level' => Logger::DEBUG,
             'console'=>false,
             'log'=>'single',
@@ -34,15 +35,17 @@ class ChannelLogDefaultConfigurator implements ChannelLogConfigurator
         if(empty($path)){
             throw new \InvalidArgumentException('log file path required');
         }
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            if(strpos($path,':'.DIRECTORY_SEPARATOR)===false){
-//                throw new \InvalidArgumentException('relative path not allowed');
-                $path = storage_path($path);
-            }
-        }else{
-            if($path[0] !== DIRECTORY_SEPARATOR){
-//                throw new \InvalidArgumentException('relative path not allowed');
-                $path = storage_path($path);
+        if($path!=='php://stdout'){
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                if(strpos($path,':'.DIRECTORY_SEPARATOR)===false){
+    //                throw new \InvalidArgumentException('relative path not allowed');
+                    $path = storage_path($path);
+                }
+            }else{
+                if($path[0] !== DIRECTORY_SEPARATOR){
+    //                throw new \InvalidArgumentException('relative path not allowed');
+                    $path = storage_path($path);
+                }
             }
         }
         $level = Logger::toMonologLevel($settings['level']);
