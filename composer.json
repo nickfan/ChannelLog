@@ -13,7 +13,7 @@
         "monolog/monolog": "~1.11"
     },
     "require-dev": {
-        "illuminate/support": "5.1.x|5.0.x|5.2.x|5.3.x|5.4.x|5.5.x",
+        "illuminate/support": "5.1.x|5.0.x|5.2.x|5.3.x|5.4.x|5.5.x|5.6.x",
         "phpunit/phpunit": "~4.0"
     },
     "autoload": {
@@ -24,6 +24,16 @@
     "autoload-dev": {
         "psr-4": {
             "Nickfan\\ChannelLog\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Nickfan\\ChannelLog\\ChannelLogServiceProvider"
+            ],
+            "aliases": {
+                "ChannelLog": "Nickfan\\ChannelLog\\Facades\\ChannelLog"
+            }
         }
     }
 }

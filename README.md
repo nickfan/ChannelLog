@@ -56,6 +56,7 @@ return [
         'level' => \Monolog\Logger::DEBUG, // Log Level
         'log_syslog_name'=>'channel_log',   // syslog mode log entry name
         'log_max_files'=>5,                 // max files keep in daily log mode
+        'formatter'=>\Nickfan\ChannelLog\ChannelLogJsonFormatter::class,           // (optional) Record Formatter Class Name
     ],
 ];
 

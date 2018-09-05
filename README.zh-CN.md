@@ -52,6 +52,7 @@ return [
         'level' => \Monolog\Logger::DEBUG, // 日志等级 \Monolog\Logger::DEBUG 常量或者 'debug' 格式的字符串
         'log_syslog_name'=>'channel_log',   // 当日志模式为 syslog时 系统日志中的项目名称
         'log_max_files'=>5,                 // 当日志模式为 daily时，最大保留的日志文件个数(天数)
+        'formatter'=>\Nickfan\ChannelLog\ChannelLogJsonFormatter::class,           // (可选) 行记录格式化类名
     ],
 ];
 
