@@ -30,7 +30,10 @@
         "laravel": {
             "providers": [
                 "Nickfan\\ChannelLog\\ChannelLogServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "ChannelLog": "Nickfan\\ChannelLog\\Facades\\ChannelLog"
+            }
         }
     }
 }
