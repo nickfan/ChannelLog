@@ -39,6 +39,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
                     'console'=> true,
                     'path' => $projectRoot.'/logs/event.log',
                     'level' => \Monolog\Logger::DEBUG,
+                    'formatter' => \Nickfan\ChannelLog\ChannelLogJsonFormatter::class,
                 ],
             ]
         );
