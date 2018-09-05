@@ -58,7 +58,11 @@ class ChannelLogDefaultConfigurator implements ChannelLogConfigurator
         }
         $level = Logger::toMonologLevel($settings['level']);
 
-        $formatter = new LineFormatter(null, null, false, true);
+        if(!empty($settings['formatter'])){
+            $formatter = app($settings['formatter']);
+        }else{
+            $formatter = new LineFormatter(null, null, false, true);
+        }
         switch ($log){
             case 'daily':
                 $days = $settings['log_max_files'];
@@ -80,33 +84,36 @@ class ChannelLogDefaultConfigurator implements ChannelLogConfigurator
                 break;
             case 'console':
                 $logger->pushHandler(
-                    new ChannelLogStreamHandler(
+                    $handler = new ChannelLogStreamHandler(
                         $channel,
                         'php://stdout',
                         $level
                     )
                 );
+                $handler->setFormatter($formatter);
                 break;
             case 'single':
             default:
                 $logger->pushHandler(
-                    new ChannelLogStreamHandler(
+                    $handler = new ChannelLogStreamHandler(
                         $channel,
                         $path,
                         $level
                     )
                 );
+                $handler->setFormatter($formatter);
                 break;
         }
         if($settings['console']==true && $log!='console'){
             $logger->pushHandler(
-                new ChannelLogStreamHandler(
+                $handler = new ChannelLogStreamHandler(
                     $channel,
                     'php://stdout',
                     $level
                 )
 //                new StreamHandler('php://stdout', $level)
             );
+            $handler->setFormatter($formatter);
         }
         return $logger;
     }
